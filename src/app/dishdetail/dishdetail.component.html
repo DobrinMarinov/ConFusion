@@ -30,7 +30,7 @@
                 <h5>COMMENTS</h5>
             </mat-card-title>
             <mat-nav-list>
-                <mat-list-item *ngFor="let review of dishReviews">
+                <mat-list-item *ngFor="let review of dish.comments">
                     <div matLine>{{review.comment}}</div>
                     <div matLine>{{review.rating}} Stars</div>
                     <div matLine>-- {{review.author}} {{review.date | date}}</div>
