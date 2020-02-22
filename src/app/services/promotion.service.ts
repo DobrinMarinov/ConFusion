@@ -13,12 +13,18 @@ export class PromotionService {
     return PROMOTIONS;
   }
 
-  getPromotion(id: string): Promotion {
-    return PROMOTIONS.filter((promo) => (promo.id === id))[0];
+  getPromotion(id: string): Promise<Promotion> {
+    return new Promise(resolve => {
+      //simulates a server call latency
+      setTimeout(() => resolve(PROMOTIONS.filter((promo) => (promo.id === id))[0]), 2000);
+    })
   }
 
-  getFeaturedPromotion(): Promotion {
-    return PROMOTIONS.filter((promotion) => promotion.featured)[0];
+  getFeaturedPromotion(): Promise<Promotion> {
+    return new Promise(resolve => {
+      //simulates a server call latency
+      setTimeout(() => resolve(PROMOTIONS.filter((promotion) => promotion.featured)[0]), 2000);
+    })
   }
 
 }
