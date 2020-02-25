@@ -25,6 +25,8 @@ import { LeaderService } from './services/leader.service';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import 'hammerjs';
+
 @NgModule({
   declarations: [
     AppComponent,
