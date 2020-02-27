@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
+import { ValidationService } from '../services/validation.service';
 
 @Component({
   selector: 'app-contact',
@@ -14,35 +15,11 @@ export class ContactComponent implements OnInit {
   contactType = ContactType;
   @ViewChild('fform', {static: true}) feedbackFormDirective: any;
 
-  formErrors = {
-    'firstname': '', 
-    'lastname': '',
-    'telnum': '',
-    'email': ''
-  };
+  formErrors = this.validationService.contactFormErrors;
 
-  validationMessages = {
-    'firstname': {
-      'required':      'First Name is required.',
-      'minlength':     'First Name must be at least 2 characters long.',
-      'maxlength':     'FirstName cannot be more than 25 characters long.'
-    },
-    'lastname': {
-      'required':      'Last Name is required.',
-      'minlength':     'Last Name must be at least 2 characters long.',
-      'maxlength':     'Last Name cannot be more than 25 characters long.'
-    },
-    'telnum': {
-      'required':      'Tel. number is required.',
-      'pattern':       'Tel. number must contain only numbers.'
-    },
-    'email': {
-      'required':      'Email is required.',
-      'email':         'Email not in valid format.'
-    },
-  };
+  validationMessages = this.validationService.contactValidationMessages;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private validationService: ValidationService) {
     this.createForm();
    }
 
@@ -61,9 +38,9 @@ export class ContactComponent implements OnInit {
     });
 
     this.feedbackForm.valueChanges
-    .subscribe(data => this.onValueChanged(data));
+    .subscribe(data => this.validationService.onValueChanged(this.feedbackForm, this.formErrors, this.validationMessages, data));
 
-    this.onValueChanged(); // reset validation messages
+    this.validationService.onValueChanged(this.feedbackForm, this.formErrors, this.validationMessages);
   }
 
   onSubmit() {
@@ -79,26 +56,6 @@ export class ContactComponent implements OnInit {
       message: ''
     });
     this.feedbackFormDirective.reset();
-  }
-
-  onValueChanged(data?: any) {
-    if (!this.feedbackForm) { return; }
-    const form = this.feedbackForm;
-    for (const field in this.formErrors) {
-      if (this.formErrors.hasOwnProperty(field)) {
-        // clear previous error message (if any)
-        this.formErrors[field] = '';
-        const control = form.get(field);
-        if (control && control.dirty && !control.valid) {
-          const messages = this.validationMessages[field];
-          for (const key in control.errors) {
-            if (control.errors.hasOwnProperty(key)) {
-              this.formErrors[field] += messages[key] + ' ';
-            }
-          }
-        }
-      }
-    }
   }
 
 }

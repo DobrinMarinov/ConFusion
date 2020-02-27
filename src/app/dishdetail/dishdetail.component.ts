@@ -6,6 +6,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Comment } from '../shared/comment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ValidationService } from '../services/validation.service';
 
 @Component({
   selector: 'app-dishdetail',
@@ -25,23 +26,13 @@ export class DishdetailComponent implements OnInit {
     commentForm: FormGroup; 
     @ViewChild('fform', {static: false}) commentFormDirective: any;
 
-    formErrors = {
-      'author': '', 
-      'comment': ''
-    };
-  
-    validationMessages = {
-      'author': {
-        'required': 'Author\'s name is required.',
-        'minlength': 'Author\'s name must be at least 2 characters long.',
-      },
-      'comment': {
-        'required': 'Comment message is required.',
-      },
-    };
+    formErrors = this.validationService.dishDetailCommentformErrors;
+
+    validationMessages = this.validationService.dishDetailCommentvalidationMessages;
 
     constructor(private dishService: DishService, private location: Location, 
-      private route: ActivatedRoute, private formBuilder: FormBuilder) {
+      private route: ActivatedRoute, private formBuilder: FormBuilder, 
+      private validationService: ValidationService) {
         this.createCommentForm();
       }
 
@@ -72,32 +63,12 @@ export class DishdetailComponent implements OnInit {
         comment: ['', Validators.required],
       });
       this.commentForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
-  
-      this.onValueChanged(); // reset validation messages
+      .subscribe(data => this.validationService.onValueChanged(this.commentForm, this.formErrors, this.validationMessages, data));
+
+      this.validationService.onValueChanged(this.commentForm,  this.formErrors, this.validationMessages); // reset validation messages
      
       this.commentForm.valueChanges
       .subscribe(data => this.populateFieldsOnChange(data));
-    }
-
-    onValueChanged(data?: any) {
-      if (!this.commentForm) { return; }
-      const form = this.commentForm;
-      for (const field in this.formErrors) {
-        if (this.formErrors.hasOwnProperty(field)) {
-          // clear previous error message (if any)
-          this.formErrors[field] = '';
-          const control = form.get(field);
-          if (control && control.dirty && !control.valid) {
-            const messages = this.validationMessages[field];
-            for (const key in control.errors) {
-              if (control.errors.hasOwnProperty(key)) {
-                this.formErrors[field] += messages[key] + ' ';
-              }
-            }
-          }
-        }
-      }
     }
 
     populateFieldsOnChange(data: any) {
