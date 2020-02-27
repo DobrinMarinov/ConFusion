@@ -21,6 +21,7 @@ export class DishdetailComponent implements OnInit {
     comment: string;
     stars: number;
     author: string;
+    submissionComment: Comment;
     commentForm: FormGroup; 
     @ViewChild('fform', {static: false}) commentFormDirective: any;
 
@@ -67,7 +68,7 @@ export class DishdetailComponent implements OnInit {
     createCommentForm(): void {
       this.commentForm = this.formBuilder.group({
         author: ['', [Validators.required, Validators.minLength(2)]],
-        rating: ['5'],
+        rating: [5],
         comment: ['', Validators.required],
       });
       this.commentForm.valueChanges
@@ -108,14 +109,25 @@ export class DishdetailComponent implements OnInit {
     }
 
     onSubmit() {
-      this.comment = this.commentForm.value;
+      this.submissionComment = this.commentForm.value;
       console.log(this.comment);
+      this.addCommentToList(this.stars);
       this.commentForm.reset({
         author: '',
         rating: '5',
         comment: ''
       });
       this.commentFormDirective.reset();
+    }
+
+    addCommentToList(stars: number) {
+      this.submissionComment = {
+        rating: stars,
+        comment: this.comment,
+        author: this.author,
+        date: new Date().toISOString()
+      };
+      this.dish.comments.push(this.submissionComment);
     }
 
 }
