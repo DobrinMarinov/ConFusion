@@ -51,7 +51,7 @@
                 <p>
                     <mat-form-field class="full-width">
                       <input matInput formControlName="author" placeholder="Author" type="text" required>
-                      <!-- <mat-error *ngIf="formErrors.author">{{ formErrors.author }}</mat-error> -->
+                      <mat-error *ngIf="formErrors.author">{{ formErrors.author }}</mat-error>
                     </mat-form-field>
                 </p>
 
@@ -60,7 +60,7 @@
                 <p>
                     <mat-form-field class="full-width">
                       <textarea matInput formControlName="comment" placeholder="Comment" type="text" required></textarea>
-                      <!-- <mat-error *ngIf="formErrors.comment">{{ formErrors.comment }}</mat-error>                       -->
+                      <mat-error *ngIf="formErrors.comment">{{ formErrors.comment }}</mat-error>                      
                     </mat-form-field>
                 </p>    
     
