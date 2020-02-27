@@ -18,7 +18,9 @@ export class DishdetailComponent implements OnInit {
     dishIds: string[];
     prev: string;
     next: string;
-    comment: Comment;
+    comment: string;
+    stars: number;
+    author: string;
     commentForm: FormGroup; 
     @ViewChild('fform', {static: false}) commentFormDirective: any;
 
@@ -72,6 +74,9 @@ export class DishdetailComponent implements OnInit {
       .subscribe(data => this.onValueChanged(data));
   
       this.onValueChanged(); // reset validation messages
+     
+      this.commentForm.valueChanges
+      .subscribe(data => this.populateFieldsOnChange(data));
     }
 
     onValueChanged(data?: any) {
@@ -92,6 +97,14 @@ export class DishdetailComponent implements OnInit {
           }
         }
       }
+    }
+
+    populateFieldsOnChange(data: any) {
+      if (!this.commentForm) { return; }
+      const form = this.commentForm;
+      this.author = form.get('author').value;
+      this.stars = form.get('rating').value;
+      this.comment = form.get('comment').value;
     }
 
     onSubmit() {

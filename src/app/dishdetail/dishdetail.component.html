@@ -43,7 +43,12 @@
                     <div matLine>{{review.rating}} Stars</div>
                     <div matLine>-- {{review.author}} {{review.date | date}}</div>
                 </mat-list-item>
-            </mat-nav-list>
+                <mat-list-item *ngIf="commentForm.valid">
+                    <div matLine>{{comment}}</div>
+                    <div matLine>{{stars}} Stars</div>
+                    <div matLine>-- {{author}}</div>
+                </mat-list-item>
+            </mat-nav-list>            
         </div>        
 
         <div class="form-size" *ngIf="dish">        
@@ -68,9 +73,5 @@
                 [disabled]="commentForm.invalid">Submit</button>
             </form>
         </div>
-
-
-    </div>
-
-    
+    </div>    
 </div>
