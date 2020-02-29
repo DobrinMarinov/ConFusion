@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
 import { Location } from '@angular/common';
@@ -32,7 +32,7 @@ export class DishdetailComponent implements OnInit {
 
     constructor(private dishService: DishService, private location: Location, 
       private route: ActivatedRoute, private formBuilder: FormBuilder, 
-      private validationService: ValidationService) {
+      private validationService: ValidationService, @Inject('baseURL') private baseURL) {
         this.createCommentForm();
       }
 
