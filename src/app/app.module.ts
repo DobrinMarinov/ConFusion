@@ -28,6 +28,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { baseURL } from './shared/baseurl';
 
 import 'hammerjs';
+import { ProcessHttpMessageService } from './services/process-http-message.service';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import 'hammerjs';
     DishService, 
     PromotionService,
     LeaderService,
+    ProcessHttpMessageService,
     {provide: 'baseURL', useValue: baseURL }
   ],
   entryComponents: [
