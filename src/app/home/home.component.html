@@ -18,8 +18,12 @@
                 <p>{{dish.description}}</p>
             </mat-card-content>
         </mat-card>
-        <div [hidden]="dish" fxFlex>
+        <div [hidden]="dish || errorMessage" fxFlex>
             <mat-spinner></mat-spinner><h4>Loading the Dish . . .</h4>
+        </div>
+        <div fxFlex *ngIf="errorMessage">
+            <h2>Error</h2>
+            <h4>{{errorMessage}}</h4>
         </div>
 
         <mat-card *ngIf="promotion" fxFlex>

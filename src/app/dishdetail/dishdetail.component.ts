@@ -24,6 +24,7 @@ export class DishdetailComponent implements OnInit {
     author: string;
     submissionComment: Comment;
     commentForm: FormGroup; 
+    errorMessage: string;
     @ViewChild('fform', {static: false}) commentFormDirective: any;
 
     formErrors = this.validationService.dishDetailCommentformErrors;
@@ -42,7 +43,7 @@ export class DishdetailComponent implements OnInit {
 
       this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
       this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); }, errorMsg => this.errorMessage = errorMsg);
 
     }
 
