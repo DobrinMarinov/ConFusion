@@ -16,6 +16,7 @@ import { ValidationService } from '../services/validation.service';
 export class DishdetailComponent implements OnInit {
 
     dish: Dish;
+    dishCopy: Dish;
     dishIds: string[];
     prev: string;
     next: string;
@@ -43,7 +44,8 @@ export class DishdetailComponent implements OnInit {
 
       this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
       this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); }, errorMsg => this.errorMessage = errorMsg);
+      .subscribe(dish => { this.dish = dish; this.dishCopy = dish; this.setPrevNext(dish.id); }, 
+      errorMsg => this.errorMessage = errorMsg);
 
     }
 
@@ -84,6 +86,8 @@ export class DishdetailComponent implements OnInit {
       this.submissionComment = this.commentForm.value;
       console.log(this.comment);
       this.addCommentToList(this.stars);
+      this.dishService.putDish(this.dishCopy).subscribe(dish => {this.dish = dish; this.dishCopy = dish;}, 
+        errorMsg => { this.dish =null, this.dishCopy = null; this.errorMessage = <any>errorMsg; })
       this.commentForm.reset({
         author: '',
         rating: '5',
@@ -99,7 +103,7 @@ export class DishdetailComponent implements OnInit {
         author: this.author,
         date: new Date().toISOString()
       };
-      this.dish.comments.push(this.submissionComment);
+      this.dishCopy.comments.push(this.submissionComment);
     }
 
 }
