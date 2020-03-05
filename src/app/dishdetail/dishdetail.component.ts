@@ -7,11 +7,23 @@ import { switchMap } from 'rxjs/operators';
 import { Comment } from '../shared/comment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
-  styleUrls: ['./dishdetail.component.scss']
+  styleUrls: ['./dishdetail.component.scss'],
+  animations: [
+    trigger('visibility', [
+      state('shown', style({
+        transform: 'scale(1.0)', opacity: 1
+      })),
+      state('hidden', style({
+        transform: 'scale(0.5)', opacity: 0
+      })),
+      transition('* => *', animate('0.5s ease-in-out'))
+    ])
+  ]
 })
 export class DishdetailComponent implements OnInit {
 
@@ -26,6 +38,7 @@ export class DishdetailComponent implements OnInit {
     submissionComment: Comment;
     commentForm: FormGroup; 
     errorMessage: string;
+    visibility = 'shown';
     @ViewChild('fform', {static: false}) commentFormDirective: any;
 
     formErrors = this.validationService.dishDetailCommentformErrors;
@@ -43,10 +56,10 @@ export class DishdetailComponent implements OnInit {
       // this.dishService.getDish(id).subscribe(dish => this.dish = dish);
 
       this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
-      this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.dishCopy = dish; this.setPrevNext(dish.id); }, 
-      errorMsg => this.errorMessage = errorMsg);
 
+      this.route.params.pipe(switchMap((params: Params) => { this.visibility = 'hidden'; return this.dishService.getDish(params['id']); }))
+      .subscribe(dish => { this.dish = dish; this.dishCopy = dish; this.setPrevNext(dish.id); this.visibility = 'shown'}, 
+      errorMsg => this.errorMessage = errorMsg);
     }
 
     goBack(): void {
