@@ -22,7 +22,7 @@ export class MenuComponent implements OnInit {
   errorMessage: string;
   // selectedDish: Dish;
 
-  constructor(private dishService: DishService, @Inject('baseURL') private baseURL) { }
+  constructor(private dishService: DishService, @Inject('baseURL') public baseURL) { }
 
   ngOnInit() {
     this.dishService.getDishes().subscribe(dishes => this.dishes = dishes, 

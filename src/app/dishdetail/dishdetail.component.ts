@@ -45,7 +45,7 @@ export class DishdetailComponent implements OnInit {
 
     constructor(private dishService: DishService, private location: Location, 
       private route: ActivatedRoute, private formBuilder: FormBuilder, 
-      private validationService: ValidationService, @Inject('baseURL') private baseURL) {
+      private validationService: ValidationService, @Inject('baseURL') public baseURL) {
         this.createCommentForm();
       }
 
