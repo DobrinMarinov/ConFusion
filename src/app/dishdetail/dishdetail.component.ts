@@ -7,14 +7,19 @@ import { switchMap } from 'rxjs/operators';
 import { Comment } from '../shared/comment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
-import { visibility } from '../animations/app.animation';
+import { visibility, flyInOut } from '../animations/app.animation';
 
 @Component({
   selector: 'app-dishdetail',
   templateUrl: './dishdetail.component.html',
   styleUrls: ['./dishdetail.component.scss'],
+  host: {
+    '[@flyInOut]': 'true',
+    'style': 'display: block;'
+  },
   animations: [
-    visibility()
+    visibility(),
+    flyInOut()
   ]
 })
 export class DishdetailComponent implements OnInit {
