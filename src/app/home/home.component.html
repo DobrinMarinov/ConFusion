@@ -33,13 +33,17 @@
                     <h3>{{promotion.name | uppercase}}</h3>
                 </mat-card-title>
             </mat-card-header>
-                <img mat-card-image src={{promotion.image}} alt={{promotion.name}}>
+                <img mat-card-image src="{{ baseURL + promotion.image }}" alt={{promotion.name}}>
             <mat-card-content>
                 <p>{{promotion.description}}</p>
             </mat-card-content>
         </mat-card>
-        <div [hidden]="promotion" fxFlex>
+        <div [hidden]="promotion || errorMessage" fxFlex>
             <mat-spinner></mat-spinner><h4>Loading Promotion . . .</h4>
+        </div>
+        <div fxFlex *ngIf="errorMessage">
+            <h2>Error</h2>
+            <h4>{{errorMessage}}</h4>
         </div>
         
         <mat-card *ngIf="featuredLeader" fxFlex [@expand]>

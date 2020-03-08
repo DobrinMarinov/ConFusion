@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
-import { DISHES } from '../shared/dishes';
 import { DishService } from '../services/dish.service';
 import { PromotionService } from '../services/promotion.service';
 import { Promotion } from '../shared/promotion';
@@ -33,17 +32,23 @@ export class HomeComponent implements OnInit {
     @Inject('baseURL') public baseURL) { }
 
   ngOnInit() {
-    this.dishService.getFeaturedDish().subscribe(dish => this.dish = dish, errorMess => this.errorMessage = errorMess);
-    this.promotionService.getFeaturedPromotion().subscribe(promotion => this.promotion = promotion);
+    this.getFeaturedDish();
+    this.getFeaturedPromotion();
+    this.getFeaturedLeader();
+  }
+
+  getFeaturedDish() {
+    this.dishService.getFeaturedDish()
+      .subscribe(dish => this.dish = dish, errorMess => this.errorMessage = errorMess);
+  }
+
+  getFeaturedPromotion() {
+    this.promotionService.getFeaturedPromotion()
+      .subscribe(promotion => this.promotion = promotion, errorMess => this.errorMessage = errorMess);
+  }
+  
+  getFeaturedLeader() {
     this.leaderService.getFeaturedLeader().subscribe(leader => this.featuredLeader = leader);
-  }
-
-  getDish(id: string): Dish {
-    return DISHES.filter((dish) => (dish.id))[0];
-  }
-
-  getFeaturedDish(): Dish {
-    return DISHES.filter((dish) => dish.featured)[0];
   }
 
 }
