@@ -41,7 +41,7 @@
     <h3>Send us your Feedback</h3>
     <p>{{ feedbackForm.value | json }} {{ feedbackForm.status | json }}</p>
 
-    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()">
+    <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()" [hidden]='isFormVisible'>
       <p>
         <mat-form-field class="half-width">
           <input matInput formControlName="firstname" placeholder="First Name" type="text" required>
@@ -94,6 +94,28 @@
       <button type="submit" mat-button class="background-primary text-floral-white"
       [disabled]="feedbackForm.invalid">Submit</button>
     </form>
+
+    <div *ngIf='isSpinnerVisible'>
+      <h4>Submitting Feedback</h4>
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div flex *ngIf='isFeedbackVisible' [@expand]>
+      <h3>Your Feedback to be published</h3>
+      <p>First Name: {{ feedback.firstname }}</p>
+      <p>Last Name: {{ feedback.lastname }}</p>
+      <p>Telephone Number: {{ feedback.telnum }}</p>
+      <p>Email: {{ feedback.email }}</p>
+      <p>Contact You?: {{ feedback.agree }}</p>
+      <p>How?: {{ feedback.contacttype }}</p>
+      <p>Feedback Message: {{ feedback.message }}</p>
+    </div>
+
+    <div *ngIf="errorMessage">
+      <h2>Error</h2>
+      <h4>{{errorMessage}}</h4>
+    </div>
+
   </div>
 
 </div>

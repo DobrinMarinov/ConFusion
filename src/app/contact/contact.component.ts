@@ -23,6 +23,9 @@ export class ContactComponent implements OnInit {
   feedback: Feedback;
   contactType = ContactType;
   errorMessage: string;
+  isSpinnerVisible: boolean;
+  isFeedbackVisible: boolean;
+  isFormVisible: boolean;
   @ViewChild('fform', {static: true}) feedbackFormDirective: any;
 
   formErrors = this.validationService.contactFormErrors;
@@ -71,15 +74,19 @@ export class ContactComponent implements OnInit {
   }
 
   postFeedback(feedback: Feedback) {
-    console.log('FEEDBACK processed................');
-    console.log(this.feedback);
+    this.isFormVisible = true;
+    this.isSpinnerVisible = true;
     this.feedbackService.postFeedback(this.feedback)
-      .subscribe(
-        feedback => this.feedback = feedback, 
-        errorMsg => {
-          this.feedback = null, 
-          this.errorMessage = errorMsg
-        });
+      .subscribe(feedback => {
+        this.feedback = feedback;
+        this.isSpinnerVisible = false;
+        this.isFeedbackVisible = true;
+        setTimeout(() => {
+          this.feedback = null;
+          this.isFeedbackVisible = false;
+          this.isFormVisible = false;
+        }, 5000);
+      }, errorMsg => { this.feedback = null; this.errorMessage = <any>errorMsg; });
   }
-
+  
 }
