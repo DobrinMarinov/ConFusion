@@ -28,10 +28,7 @@ export class PromotionService {
   getFeaturedPromotion(): Observable<Promotion> {
     return this.http.get<Promotion>(baseURL + 'promotions?featured=true')
       .pipe(map(promotions => promotions[0]))
-      .pipe(catchError(this.processHttpMessageService.handleError))
-
-    //simulates a server call latency
-    // return of(PROMOTIONS.filter((promotion) => promotion.featured)[0]).pipe(delay(2000)); 
+      .pipe(catchError(this.processHttpMessageService.handleError));
   }
 
 }

@@ -42,8 +42,8 @@ export class DishService {
       })
     };
   
-  return this.http.put<Dish>(baseURL + 'dishes/' + dish.id, dish, httpOptions)
-    .pipe(catchError(this.processHttpMessageService.handleError));
+    return this.http.put<Dish>(baseURL + 'dishes/' + dish.id, dish, httpOptions)
+      .pipe(catchError(this.processHttpMessageService.handleError));
   }
     
 }

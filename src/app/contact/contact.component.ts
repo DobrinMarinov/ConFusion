@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
 import { ValidationService } from '../services/validation.service';
 import { flyInOut } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -21,13 +22,16 @@ export class ContactComponent implements OnInit {
   feedbackForm: FormGroup;
   feedback: Feedback;
   contactType = ContactType;
+  errorMessage: string;
   @ViewChild('fform', {static: true}) feedbackFormDirective: any;
 
   formErrors = this.validationService.contactFormErrors;
 
   validationMessages = this.validationService.contactValidationMessages;
 
-  constructor(private formBuilder: FormBuilder, private validationService: ValidationService) {
+  constructor(private formBuilder: FormBuilder, 
+    private validationService: ValidationService, 
+    private feedbackService: FeedbackService) {
     this.createForm();
    }
 
@@ -53,7 +57,7 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.postFeedback(this.feedback);
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
@@ -64,6 +68,18 @@ export class ContactComponent implements OnInit {
       message: ''
     });
     this.feedbackFormDirective.reset();
+  }
+
+  postFeedback(feedback: Feedback) {
+    console.log('FEEDBACK processed................');
+    console.log(this.feedback);
+    this.feedbackService.postFeedback(this.feedback)
+      .subscribe(
+        feedback => this.feedback = feedback, 
+        errorMsg => {
+          this.feedback = null, 
+          this.errorMessage = errorMsg
+        });
   }
 
 }
