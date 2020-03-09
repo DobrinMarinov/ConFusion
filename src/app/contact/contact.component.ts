@@ -13,7 +13,7 @@ import { flyInOut } from '../animations/app.animation';
     'style': 'display: block;'
   },
   animations: [
-    flyInOut
+    flyInOut()
   ]
 })
 export class ContactComponent implements OnInit {
